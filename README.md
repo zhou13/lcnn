@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository contains the official PyTorch implementation of L-CNN, a conceptually simple yet effective neural network-based algorithm for detecting the wireframe from a given image. It outperforms the previous state-of-the-art wireframe and line extraction algorithms by a large margin. We hope that this repository serves as an easily reproducible baseline for future researches in this area.
+This repository contains the official PyTorch implementation of [L-CNN](https://arxiv.org/abs/1905.03246), a conceptually simple yet effective neural network-based algorithm for detecting the wireframe from a given image. It outperforms the previous state-of-the-art wireframe and line extraction algorithms by a large margin. We hope that this repository serves as an easily reproducible baseline for future researches in this area.
 
 ## Main Results
 
@@ -145,3 +145,16 @@ an hour** depending on your CPUs.
 
 See the source code of `eval-sAP.py`, `eval-mAPJ.py`, `eval-APH.py`, and `misc/*.py` for more
 details on evaluation.
+
+### Citing End-to-End Wireframe Parsing
+
+If you find L-CNN useful in your research, please consider citing:
+
+```
+@article{zhou2017end,
+    Author = {Yichao Zhou, Haozhi Qi, Yi Ma},
+    Title = {End-to-End Wireframe Parsing},
+    Journal = {arXiv preprint arXiv:1905.03246},
+    Year = {2019}
+}
+```

@@ -1,8 +1,10 @@
 # L-CNN — End-to-End Wireframe Parsing
 
+This repository contains the official PyTorch implementation of the paper:  *Yichao Zhou, Haozhi Qi, Yi Ma. ["End-to-End Wireframe Parsing."](https://arxiv.org/abs/1905.03246)  arXiv:1905.03246 [cs.CV]*.
+
 ## Introduction
 
-This repository contains the official PyTorch implementation of [L-CNN](https://arxiv.org/abs/1905.03246), a conceptually simple yet effective neural network-based algorithm for detecting the wireframe from a given image. It outperforms the previous state-of-the-art wireframe and line extraction algorithms by a large margin. We hope that this repository serves as an easily reproducible baseline for future researches in this area.
+[L-CNN](https://arxiv.org/abs/1905.03246) is a conceptually simple yet effective neural network for detecting the wireframe from a given image. It outperforms the previous state-of-the-art wireframe and line detectors by a large margin. We hope that this repository serves as an easily reproducible baseline for future researches in this area.
 
 ## Main Results
 
@@ -14,7 +16,7 @@ This repository contains the official PyTorch implementation of [L-CNN](https://
 
 ### Quantitative Measures
 
-The following table reports the performance of several wireframe and line detection algorithms on the [Wireframe dataset](https://github.com/huangkuns/wireframe).
+The following table reports the performance metrics of several wireframe and line detectors on the [Wireframe dataset](https://github.com/huangkuns/wireframe).
 
 |                                                      | Wireframe (sAP<sup>10</sup>) | Wireframe (AP<sup>H</sup>) | Wireframe (F<sup>H</sup>) | Wireframe (mAP<sup>J</sup>) | 
 | :--------------------------------------------------: | :--------------------------------: | :-----------------------------: | :----------------------------: | :------------------------------: | 
@@ -63,6 +65,7 @@ eval-APH.py                     # script for APH evaluation
 eval-mAPJ.py                    # script for mAPJ evaluation
 train.py                        # script for training the neural network
 post.py                         # script for post-processing
+process.py                      # script for processing a dataset from a checkpoint
 ```
 
 ## Reproducing Results
@@ -93,7 +96,7 @@ rm *.xz
 cd ..
 ```
 
-If `gdrive-download.sh` does not work for you, you can download the data manually from [Google
+If `gdrive-download.sh` does not work for you, you can download the pre-processed dataset manually from [Google
 Drive](https://drive.google.com/drive/u/1/folders/1rXLAh5VIj8jwf8vLfuZncStihRO2chFr) and proceed
 accordingly.
 

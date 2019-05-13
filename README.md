@@ -1,6 +1,6 @@
 # L-CNN — End-to-End Wireframe Parsing
 
-This repository contains the official PyTorch implementation of the paper:  *Yichao Zhou, Haozhi Qi, Yi Ma. ["End-to-End Wireframe Parsing."](https://arxiv.org/abs/1905.03246)  arXiv:1905.03246 [cs.CV]*.
+This repository contains the official PyTorch implementation of the paper:  *[Yichao Zhou](https://yichaozhou.com), [Haozhi Qi](http://haozhi.io), [Yi Ma](https://people.eecs.berkeley.edu/~yima/). ["End-to-End Wireframe Parsing."](https://arxiv.org/abs/1905.03246)  arXiv:1905.03246 [cs.CV]*.
 
 ## Introduction
 
@@ -86,19 +86,34 @@ conda install -y pyyaml docopt matplotlib scikit-image opencv
 mkdir data logs post
 ```
 
-### Downloading data
+### Downloading the Processed Dataset
 Make sure `curl` is installed on your system and execute
 ```bash
 cd data
 ../misc/gdrive-download.sh 1T4_6Nb5r4yAXre3lf-zpmp3RbmyP1t9q wireframe.tar.xz
 tar xf wireframe.tar.xz
-rm *.xz
+rm wireframe.tar.xz
 cd ..
 ```
 
-If `gdrive-download.sh` does not work for you, you can download the pre-processed dataset manually from [Google
+If `gdrive-download.sh` does not work for you, you can download the pre-processed dataset
+`wireframe.tar.xz`  manually from [Google
 Drive](https://drive.google.com/drive/u/1/folders/1rXLAh5VIj8jwf8vLfuZncStihRO2chFr) and proceed
 accordingly.
+
+#### Processing the Dataset
+*Optionally*, you can pre-process (e.g., generate heat maps, do data augmentation) the dataset from
+scratch rather than downloading the processed one.  **Skip** this section if you just want to use
+the pre-processed dataset `wireframe.tar.xz`.
+
+```bash
+cd data
+../misc/gdrive-download.sh 1BRkqyi5CKPQF6IYzj_dQxZFQl0OwbzOf wireframe_raw.tar.xz
+tar xf wireframe_raw.tar.xz
+rm wireframe_raw.tar.xz
+cd ..
+dataset/wireframe.py data/wireframe_raw data/wireframe
+```
 
 ### Training
 To train the neural network on GPU 0 (specified by `-d 0`) with the default parameters, execute

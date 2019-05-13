@@ -170,9 +170,9 @@ If you find L-CNN useful in your research, please consider citing:
 
 ```
 @article{zhou2019end,
-    Author = {Yichao Zhou, Haozhi Qi, Yi Ma},
-    Title = {End-to-End Wireframe Parsing},
-    Journal = {arXiv preprint arXiv:1905.03246},
-    Year = {2019}
+  title={End-to-End Wireframe Parsing},
+  author={Zhou, Yichao and Qi, Haozhi and Ma, Yi},
+  journal={arXiv preprint arXiv:1905.03246},
+  year={2019}
 }
 ```

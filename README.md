@@ -79,7 +79,7 @@ git clone https://github.com/zhou13/lcnn
 cd lcnn
 conda create -y -n lcnn
 source activate lcnn
-# Replace cudatoolkit=10.0 with your CUDA version: https://pytorch.org/get-started/
+# Replace cudatoolkit=10.0 with your CUDA version: https://pytorch.org/
 conda install -y pytorch cudatoolkit=10.0 -c pytorch
 conda install -y tensorboardx -c conda-forge
 conda install -y pyyaml docopt matplotlib scikit-image opencv
@@ -129,7 +129,7 @@ with `config/wireframe.yaml` for 312k iterations.
 
 ### Post Processing
 
-To post processing the output from neural network (only necessary if you are going to evaluate AP<sup>H</sup>), execute
+To post process the outputs from neural network (only necessary if you are going to evaluate AP<sup>H</sup>), execute
 ```bash
 python ./post.py --plot --thresholds="0.010,0.015" logs/RUN/npz/ITERATION post/RUN-ITERATION
 ```

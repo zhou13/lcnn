@@ -131,11 +131,13 @@ with `config/wireframe.yaml` for 312k iterations.
 
 To post processing the output from neural network (only necessary if you are going to evaluate AP<sup>H</sup>), execute
 ```bash
-python ./post.py --plot logs/RUN/npz/ITERATION post/RUN-ITERATION
+python ./post.py --plot --thresholds="0.010,0.015" logs/RUN/npz/ITERATION post/RUN-ITERATION
 ```
 where ``--plot`` is an *optional* argument to control whether the program should also generate
-images for visualization in addition to the npz files that contain the line information. You should
-replace `RUN` and `ITERATION` to the desired value of your training instance.
+images for visualization in addition to the npz files that contain the line information, and
+``--thresholds`` controls how aggressive the post processing is.  Multiple values in ``--thresholds``
+is convenient for hyper-parameter search.  You should  replace `RUN` and `ITERATION` to the
+desired value of your training instance.
 
 ### Evaluation
 
@@ -155,11 +157,11 @@ In addition, **MATLAB is required for AP<sup>H</sup> evaluation** and `matlab` s
 After post processing, execute
 
 ```bash
-python eval-APH.py post/RUN-ITERATION post/RUN-ITERATION-APH
+python eval-APH.py post/RUN-ITERATION/0_010 post/RUN-ITERATION/0_010-APH
 ```
-to get the plot.  Here `post/RUN-ITERATION-APH` is the temporary directory storing intermediate
-files.  Due to the usage of pixel-wise matching, the evaluation of AP<sup>H</sup> **may take up to
-an hour** depending on your CPUs.
+to get the plot, where `0_010` is the threshold used in the post processing, and `post/RUN-ITERATION-APH`
+is the temporary directory storing intermediate files.  Due to the usage of pixel-wise matching, 
+the evaluation of AP<sup>H</sup> **may take up to an hour** depending on your CPUs.
 
 See the source code of `eval-sAP.py`, `eval-mAPJ.py`, `eval-APH.py`, and `misc/*.py` for more
 details on evaluation.

@@ -1,12 +1,12 @@
-import os
 import glob
 import json
 import math
+import os
 import random
 
 import numpy as np
-import torch
 import numpy.linalg as LA
+import torch
 from skimage import io
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import default_collate
@@ -15,11 +15,7 @@ from lcnn.config import M
 
 
 class WireframeDataset(Dataset):
-    def __init__(
-        self,
-        rootdir,
-        split,
-    ):
+    def __init__(self, rootdir, split):
         self.rootdir = rootdir
         filelist = glob.glob(f"{rootdir}/{split}/*_label.npz")
         filelist.sort()
@@ -39,6 +35,17 @@ class WireframeDataset(Dataset):
         image = (image - M.image.mean) / M.image.stddev
         image = np.rollaxis(image, 2).copy()
 
+        # npz["jmap"]: [J, H, W]    Junction heat map
+        # npz["joff"]: [J, 2, H, W] Junction offset within each pixel
+        # npz["lmap"]: [H, W]       Line heat map with anti-aliasing
+        # npz["junc"]: [Na, 3]      Junction coordinates
+        # npz["Lpos"]: [M, 2]       Positive lines represented with junction indices
+        # npz["Lneg"]: [M, 2]       Negative lines represented with junction indices
+        # npz["lpos"]: [Np, 2, 3]   Positive lines represented with junction coordinates
+        # npz["lneg"]: [Nn, 2, 3]   Negative lines represented with junction coordinates
+        #
+        # For junc, lpos, and lneg that stores the junction coordinates, the last
+        # dimension is (y, x, t), where t represents the type of that junction.
         with np.load(self.filelist[idx]) as npz:
             target = {
                 name: torch.from_numpy(npz[name]).float()

@@ -109,7 +109,7 @@ def main():
     # print("epoch_size (valid):", len(val_loader))
 
     if resume_from:
-        checkpoint = torch.load(osp.join(resume_from, "checkpoint_lastest.pth.tar"))
+        checkpoint = torch.load(osp.join(resume_from, "checkpoint_latest.pth.tar"))
 
     # 2. model
     if M.backbone == "stacked_hourglass":

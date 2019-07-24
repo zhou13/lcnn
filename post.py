@@ -179,8 +179,8 @@ def main():
                 imshow(im[:, :, ::-1])
                 for (a, b) in gtlines:
                     plt.plot([a[1], b[1]], [a[0], b[0]], c="orange", linewidth=0.5)
-                    plt.scatter(a[1], a[0], *PLTOPTS)
-                    plt.scatter(b[1], b[0], *PLTOPTS)
+                    plt.scatter(a[1], a[0], **PLTOPTS)
+                    plt.scatter(b[1], b[0], **PLTOPTS)
                 plt.savefig(npz_name.replace(".npz", ".png"), dpi=500, bbox_inches=0)
 
                 thres = [0.97, 0.98, 0.99]
@@ -188,8 +188,8 @@ def main():
                     imshow(im[:, :, ::-1])
                     for (a, b), s in zip(nlines[nscores > t], nscores[nscores > t]):
                         plt.plot([a[1], b[1]], [a[0], b[0]], c=c(s), linewidth=0.5)
-                        plt.scatter(a[1], a[0], *PLTOPTS)
-                        plt.scatter(b[1], b[0], *PLTOPTS)
+                        plt.scatter(a[1], a[0], **PLTOPTS)
+                        plt.scatter(b[1], b[0], **PLTOPTS)
                     plt.savefig(
                         npz_name.replace(".npz", f"_{i}.png"), dpi=500, bbox_inches=0
                     )

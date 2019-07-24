@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Process a dataset with the trained neural network
 Usage:
-    train.py [options] <yaml-config> <checkpoint> <image-dir> <output-dir>
-    train.py (-h | --help )
+    process.py [options] <yaml-config> <checkpoint> <image-dir> <output-dir>
+    process.py (-h | --help )
 
 Arguments:
    <yaml-config>                 Path to the yaml hyper-parameter file

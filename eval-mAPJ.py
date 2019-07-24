@@ -29,10 +29,11 @@ from scipy.io import loadmat
 import lcnn.models
 from lcnn.metric import mAPJ, post_jheatmap
 
-GT = "data/wireframe/valid/*.npz"
+GT = "data/york/valid/*.npz"
 IM = "data/wireframe/valid-images/*.jpg"
 WF = "/data/wirebase/result/junc/2/17"
 AFM = "/data/wirebase/result/wireframe/afm/*.npz"
+AFM = "/data/lcnn/logs/york-afm/*.npz"
 
 DIST = [0.5, 1.0, 2.0]
 
@@ -98,7 +99,7 @@ def evaluate_wireframe(im_list, gt_list, juncs_wf):
     print(f"  {ap_jc:.1f}")
 
 
-def evaluate_afm(im_list, gt_list, afm):
+def evaluate_afm(im_list, gt_list):
     print("Compute AFM mAP")
     all_junc = np.zeros((0, 3))
     all_junc_ids = np.zeros(0, dtype=np.int32)
@@ -113,12 +114,8 @@ def evaluate_afm(im_list, gt_list, afm):
             junc_gt = npz["junc"][:, :2]
 
         with np.load(afm_fn) as fafm:
-            afm_line = fafm["lines"].reshape(-1, 2, 2)[:, :, ::-1]
-            afm_score = -fafm["scores"]
-            h = fafm["h"]
-            w = fafm["w"]
-        afm_line[:, :, 0] *= 128 / h
-        afm_line[:, :, 1] *= 128 / w
+            afm_line = fafm["lines"]
+            afm_score = fafm["score"]
 
         jun_c = []
         for line, score in zip(afm_line, afm_score):
@@ -156,6 +153,7 @@ def main():
     args = docopt(__doc__)
     gt_list = sorted(glob.glob(GT))
     im_list = sorted(glob.glob(IM))
+    evaluate_afm(im_list, gt_list)
 
     for path in args["<path>"]:
         print("Evaluating", path)

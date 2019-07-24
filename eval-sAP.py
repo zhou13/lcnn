@@ -28,7 +28,8 @@ from docopt import docopt
 import lcnn.utils
 import lcnn.metric
 
-GT = "data/wireframe/valid/*.npz"
+GT = "data/york/valid/*.npz"
+# GT = "data/wireframe/valid/*.npz"
 
 
 def line_score(path, threshold=5):

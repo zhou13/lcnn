@@ -115,7 +115,7 @@ def main():
     if M.backbone == "stacked_hourglass":
         model = lcnn.models.hg(
             depth=M.depth,
-            head=lambda c_in, c_out: MultitaskHead(c_in, c_out),
+            head=MultitaskHead,
             num_stacks=M.num_stacks,
             num_blocks=M.num_blocks,
             num_classes=sum(sum(M.head_size, [])),

@@ -21,6 +21,7 @@ except Exception:
 
 # Change the directory here
 PRED = "logs/190418-201834-f8934c6-lr4d10/npz/000312000/*.npz"
+PRED = "post/jmap_0008/*.npz"
 GT = "data/wireframe/valid/*.npz"
 # PRED = "logs/190506-001532-york/*.npz"
 # GT = "data/york/valid/*.npz"
@@ -69,6 +70,11 @@ def wireframe_score(T=10):
     i = np.where(recall[1:] != recall[:-1])[0]
     ap = np.sum((recall[i + 1] - recall[i]) * precision[i + 1])
 
+    np.savez(
+        "/data/lcnn/results/sAP/wireframe.npz",
+        x=np.maximum(0.005, recall[:-1]),
+        y=precision[:-1],
+    )
     plt.plot(
         np.maximum(0.005, recall[:-1]),
         precision[:-1],
@@ -183,7 +189,15 @@ def line_score(threshold=10):
 
     T = 0.005
     plt.plot(afm_re[afm_re > T], afm_pr[afm_re > T], label="AFM", linewidth=3, c="C2")
-    plt.plot(lcnn_re[lcnn_re > T], lcnn_pr[lcnn_re > T], label="L-CNN", linewidth=3, c="C3")
+    plt.plot(
+        lcnn_re[lcnn_re > T], lcnn_pr[lcnn_re > T], label="L-CNN", linewidth=3, c="C3"
+    )
+    np.savez(
+        "/data/lcnn/results/sAP/afm.npz", x=afm_re[afm_re > T], y=afm_pr[afm_re > T]
+    )
+    np.savez(
+        "/data/lcnn/results/sAP/lcnn.npz", x=lcnn_re[lcnn_re > T], y=lcnn_pr[lcnn_re > T]
+    )
     # plt.plot(lsd_re, lsd_pr, label="LSD", linewidth=2)
 
     plt.grid(True)

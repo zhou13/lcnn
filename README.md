@@ -23,7 +23,7 @@ The following table reports the performance metrics of several wireframe and lin
 | [LSD](https://ieeexplore.ieee.org/document/4731268/) |                 /                  |              52.0             |              61.0                |                /                 |              
 |  [AFM](https://github.com/cherubicXN/afm_cvpr2019)   |                24.4                |              69.5               |              77.2              |               23.3               |           
 | [Wireframe](https://github.com/huangkuns/wireframe)  |                5.1                 |              67.8               |              72.6              |               40.9               |              
-|                      **L-CNN**                       |              **62.9**              |            **83.0**             |            **81.6**            |             **59.3**             |               
+|                      **L-CNN**                       |              **62.9**              |            **82.8**             |            **81.2**            |             **59.3**             |               
 
 ### Precision-Recall Curves
 <p align="center">

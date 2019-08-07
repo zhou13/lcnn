@@ -183,7 +183,7 @@ def main():
                     plt.scatter(b[1], b[0], **PLTOPTS)
                 plt.savefig(npz_name.replace(".npz", ".png"), dpi=500, bbox_inches=0)
 
-                thres = [0.97, 0.98, 0.99]
+                thres = [0.96, 0.97, 0.98, 0.99]
                 for i, t in enumerate(thres):
                     imshow(im[:, :, ::-1])
                     for (a, b), s in zip(nlines[nscores > t], nscores[nscores > t]):

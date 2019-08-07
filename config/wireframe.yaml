@@ -56,6 +56,9 @@ model:
   use_slop: 0
   use_conv: 0
 
+  # junction threashold for evaluation (See #5)
+  eval_junc_thres: 0.008
+
 optim:
   name: Adam
   lr: 4.0e-4

@@ -16,9 +16,9 @@ This repository contains the official PyTorch implementation of the paper:  *[Yi
 
 ### Quantitative Measures
 
-The following table reports the performance metrics of several wireframe and line detectors on the [Wireframe dataset](https://github.com/huangkuns/wireframe).
+The following table reports the performance metrics of several wireframe and line detectors on the [ShanghaiTech dataset](https://github.com/huangkuns/wireframe).
 
-|                                                      | Wireframe (sAP<sup>10</sup>) | Wireframe (AP<sup>H</sup>) | Wireframe (F<sup>H</sup>) | Wireframe (mAP<sup>J</sup>) | 
+|                                                      | ShanghaiTech (sAP<sup>10</sup>) | ShanghaiTech (AP<sup>H</sup>) | ShanghaiTech (F<sup>H</sup>) | ShanghaiTech (mAP<sup>J</sup>) | 
 | :--------------------------------------------------: | :--------------------------------: | :-----------------------------: | :----------------------------: | :------------------------------: | 
 | [LSD](https://ieeexplore.ieee.org/document/4731268/) |                 /                  |              52.0             |              61.0                |                /                 |              
 |  [AFM](https://github.com/cherubicXN/afm_cvpr2019)   |                24.4                |              69.5               |              77.2              |               23.3               |           
@@ -39,13 +39,13 @@ Below is a quick overview of the function of each file.
 ########################### Data ###########################
 figs/
 data/                           # default folder for placing the data
-    wireframe/                  # folder for Wireframe dataset (Huang et al.)
+    wireframe/                  # folder for ShanghaiTech dataset (Huang et al.)
 logs/                           # default folder for storing the output during training
 ########################### Code ###########################
 config/                         # neural network hyper-parameters and configurations
-    wireframe.yaml              # default parameter for Wireframe dataset
+    wireframe.yaml              # default parameter for ShanghaiTech dataset
 dataset/                        # all scripts related to data generation
-    wireframe.py                # script for pre-processing the Wireframe dataset to npz
+    wireframe.py                # script for pre-processing the ShanghaiTech dataset to npz
 misc/                           # misc scripts that are not important
     draw-wireframe.py           # script for generating figure grids
     lsd.py                      # script for generating npz files for LSD

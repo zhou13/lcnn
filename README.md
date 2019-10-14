@@ -171,10 +171,10 @@ details on evaluation.
 If you find L-CNN useful in your research, please consider citing:
 
 ```
-@article{zhou2019end,
-  title={End-to-End Wireframe Parsing},
-  author={Zhou, Yichao and Qi, Haozhi and Ma, Yi},
-  journal={arXiv preprint arXiv:1905.03246},
-  year={2019}
+@inproceedings{zhou2019end,
+ author={Zhou, Yichao and Qi, Haozhi and Ma, Yi},
+ title={End-to-End Wireframe Parsing},
+ booktitle={ICCV},
+ year={2019}
 }
 ```

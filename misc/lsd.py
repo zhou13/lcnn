@@ -12,7 +12,7 @@ import matplotlib as mpl
 import numpy.linalg as LA
 import matplotlib.pyplot as plt
 
-IM = "data/wireframe/valid-images/*.jpg"
+IM = "data/york/valid/*.png"
 
 
 if __name__ == "__main__":
@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
         lsd_index = np.argsort(-lsd_score)
         np.savez_compressed(
-            iname.replace(".jpg", "_LSD.npz"),
+            iname.replace(".png", "_LSD.npz"),
             lines=lsd_line[lsd_index],
             scores=lsd_score[lsd_index],
         )

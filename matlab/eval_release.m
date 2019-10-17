@@ -18,7 +18,7 @@ for index=1:numResults
   filename = filename(1:end-4);
   fprintf('processed %d/%d\n', index - 2, numResults - 2)
   gtname = [line_gt_path, '/', filename, '_line.mat'];
-  imgname = [image_path, filename, '.jpg'];
+  imgname = [image_path, filename, '.png'];
   
   I = imread(imgname);
   height = size(I,1);

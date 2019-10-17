@@ -32,8 +32,8 @@ plt.rcParams["font.family"] = "Times New Roman"
 del mpl.font_manager.weight_dict["roman"]
 mpl.font_manager._rebuild()
 
-image_path = "data/wireframe/valid-images/"
-line_gt_path = "data/wireframe/valid/"
+image_path = "data/york/valid/"
+line_gt_path = "data/york/valid/"
 output_size = 128
 
 

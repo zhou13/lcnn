@@ -31,8 +31,9 @@ from lcnn.metric import mAPJ, post_jheatmap
 
 GT = "data/york/valid/*.npz"
 IM = "data/wireframe/valid-images/*.jpg"
-WF = "/data/wirebase/result/junc/2/17"
-AFM = "/data/wirebase/result/wireframe/afm/*.npz"
+WF = "/data/lcnn/wirebase/result/junc/2/17"
+WF = "/data/lcnn/wirebase/result/wireframe/wireframe_2_rerun-baseline_0.5_0.5_york"
+AFM = "/data/lcnn/wirebase/result/wireframe/afm/*.npz"
 AFM = "/data/lcnn/logs/york-afm/*.npz"
 
 DIST = [0.5, 1.0, 2.0]
@@ -77,7 +78,7 @@ def evaluate_lcnn(im_list, gt_list, lcnn_list):
     print(f"  {ap_jc:.1f} | {ap_joc:.1f}")
 
 
-def evaluate_wireframe(im_list, gt_list, juncs_wf):
+def evaluate_wireframe(im_list, gt_list):
     print("Compute WF mAP")
     juncs_wf = load_wf()
     all_junc = np.zeros((0, 3))
@@ -132,17 +133,41 @@ def evaluate_afm(im_list, gt_list):
 
 
 def load_wf():
-    pts = [defaultdict(int) for _ in range(500)]
-    for thres in range(10):
+    pts = [defaultdict(int) for _ in range(102)]
+    for thres in sorted(
+        [
+            0.001,
+            0.01,
+            0.1,
+            0.5,
+            10,
+            100,
+            102400,
+            150,
+            12800,
+            1600,
+            2,
+            20,
+            200,
+            204800,
+            25600,
+            30,
+            3200,
+            400,
+            50,
+            51200,
+            6,
+            6400,
+            80,
+            800,
+        ]
+    ):
         mats = sorted(glob.glob(f"{WF}/{thres}/*.mat"))
         for i, mat in enumerate(mats):
-            img = cv2.imread(mat.replace(".mat", "_5.png"))
-            juncs = loadmat(mat)["junctions"]
+            juncs = loadmat(mat)["lines"].reshape(-1, 2)
             if len(juncs) == 0:
                 continue
-            juncs[:, 0] *= 128 / img.shape[1]
-            juncs[:, 1] *= 128 / img.shape[0]
-            # juncs += 0.5
+            juncs *= 128 / 512
             for j in juncs:
                 pts[i][tuple(j)] += 1
     pts = pts[: len(mats)]
@@ -153,12 +178,13 @@ def main():
     args = docopt(__doc__)
     gt_list = sorted(glob.glob(GT))
     im_list = sorted(glob.glob(IM))
-    evaluate_afm(im_list, gt_list)
+    # evaluate_afm(im_list, gt_list)
+    evaluate_wireframe(im_list, gt_list)
 
-    for path in args["<path>"]:
-        print("Evaluating", path)
-        lcnn_list = sorted(glob.glob(osp.join(path, "*.npz")))
-        evaluate_lcnn(im_list, gt_list, lcnn_list)
+    # for path in args["<path>"]:
+    #     print("Evaluating", path)
+    #     lcnn_list = sorted(glob.glob(osp.join(path, "*.npz")))
+    #     evaluate_lcnn(im_list, gt_list, lcnn_list)
 
 
 if __name__ == "__main__":

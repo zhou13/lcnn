@@ -20,13 +20,10 @@ except Exception:
     raise
 
 # Change the directory here
-PRED = "logs/190418-201834-f8934c6-lr4d10/npz/000312000/*.npz"
-PRED = "post/jmap_0008/*.npz"
-GT = "data/wireframe/valid/*.npz"
-# PRED = "logs/190506-001532-york/*.npz"
-# GT = "data/york/valid/*.npz"
-WF = "/data/lcnn/wirebase/result/wireframe/wireframe_1_rerun-baseline_0.5_0.5/*"
-AFM = "/data/lcnn/wirebase/result/wireframe/afm/*.npz"
+PRED = "/data/lcnn/logs/190815-213543-york/*.npz"
+GT = "data/york/valid/*.npz"
+WF = "/data/lcnn/wirebase/result/wireframe/wireframe_2_rerun-baseline_0.5_0.5_york/*"
+AFM = "/data/lcnn/logs/york-afm/*.npz"
 
 
 mpl.rcParams.update({"font.size": 16})
@@ -49,13 +46,13 @@ def wireframe_score(T=10):
         tp, fp, total_gt = 0, 0, 0
         for i, (gt_name, matf) in enumerate(zip(gts, mat_files)):
             line_pred = scipy.io.loadmat(matf)["lines"].reshape(-1, 2, 2)
-            img = cv2.imread(matf.replace(".mat", ".jpg"))
-            line_pred[:, :, 0] *= 128 / img.shape[1]
-            line_pred[:, :, 1] *= 128 / img.shape[0]
+            line_pred[:, :, 0] *= 128 / 512
+            line_pred[:, :, 1] *= 128 / 512
             line_pred = line_pred[:, :, ::-1]
 
             with np.load(gt_name) as fgt:
                 line_gt = fgt["lpos"][:, :, :2]
+
             tp_, fp_ = lcnn.metric.msTPFP(line_pred, line_gt, T)
             tp += tp_.sum()
             fp += fp_.sum()
@@ -71,7 +68,7 @@ def wireframe_score(T=10):
     ap = np.sum((recall[i + 1] - recall[i]) * precision[i + 1])
 
     np.savez(
-        "/data/lcnn/results/sAP/wireframe.npz",
+        "/data/lcnn/results/York/sAP/wireframe.npz",
         x=np.maximum(0.005, recall[:-1]),
         y=precision[:-1],
     )
@@ -113,12 +110,8 @@ def line_score(threshold=10):
             gt_line = fgt["lpos"][:, :, :2]
 
         with np.load(afm_name) as fafm:
-            afm_line = fafm["lines"].reshape(-1, 2, 2)[:, :, ::-1]
-            afm_score = -fafm["scores"]
-            h = fafm["h"]
-            w = fafm["w"]
-        afm_line[:, :, 0] *= 128 / h
-        afm_line[:, :, 1] *= 128 / w
+            afm_line = fafm["lines"].reshape(-1, 2, 2)
+            afm_score = fafm["score"]
         for i, ((a, b), s) in enumerate(zip(lcnn_line, lcnn_score)):
             if i > 0 and (lcnn_line[i] == lcnn_line[0]).all():
                 lcnn_line = lcnn_line[:i]
@@ -193,10 +186,12 @@ def line_score(threshold=10):
         lcnn_re[lcnn_re > T], lcnn_pr[lcnn_re > T], label="L-CNN", linewidth=3, c="C3"
     )
     np.savez(
-        "/data/lcnn/results/sAP/afm.npz", x=afm_re[afm_re > T], y=afm_pr[afm_re > T]
+        "/data/lcnn/results/York/sAP/afm.npz", x=afm_re[afm_re > T], y=afm_pr[afm_re > T]
     )
     np.savez(
-        "/data/lcnn/results/sAP/lcnn.npz", x=lcnn_re[lcnn_re > T], y=lcnn_pr[lcnn_re > T]
+        "/data/lcnn/results/York/sAP/lcnn.npz",
+        x=lcnn_re[lcnn_re > T],
+        y=lcnn_pr[lcnn_re > T],
     )
     # plt.plot(lsd_re, lsd_pr, label="LSD", linewidth=2)
 

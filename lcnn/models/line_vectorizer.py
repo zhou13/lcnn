@@ -194,7 +194,7 @@ class LineVectorizer(nn.Module):
             if do_evaluation:
                 c = (u < v).flatten()
             else:
-                c = torch.zeros_like(label)
+                c = torch.zeros_like(label, dtype=torch.bool)
 
                 # sample positive lines
                 cdx = label.nonzero().flatten()

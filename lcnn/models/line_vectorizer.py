@@ -159,7 +159,7 @@ class LineVectorizer(nn.Module):
             max_K = M.n_dyn_junc // n_type
             N = len(junc)
             if do_evaluation:
-                K = min(int((jmap > M.eval_junc_thres).float().sum().item()), 2 * max_K)
+                K = min(int((jmap > M.eval_junc_thres).float().sum().item()), max_K)
             else:
                 K = min(int(N * 2 + 2), max_K)
             device = jmap.device

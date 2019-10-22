@@ -1,6 +1,6 @@
 # L-CNN — End-to-End Wireframe Parsing
 
-This repository contains the official PyTorch implementation of the paper:  *[Yichao Zhou](https://yichaozhou.com), [Haozhi Qi](http://haozhi.io), [Yi Ma](https://people.eecs.berkeley.edu/~yima/). ["End-to-End Wireframe Parsing."](https://arxiv.org/abs/1905.03246)  arXiv:1905.03246 [cs.CV]*.
+This repository contains the official PyTorch implementation of the paper:  *[Yichao Zhou](https://yichaozhou.com), [Haozhi Qi](http://haozhi.io), [Yi Ma](https://people.eecs.berkeley.edu/~yima/). ["End-to-End Wireframe Parsing."](https://arxiv.org/abs/1905.03246)  ICCV 2019*.
 
 ## Introduction
 
@@ -124,8 +124,8 @@ python ./train.py -d 0 --identifier baseline  config/wireframe.yaml
 ### Pre-trained Models
 
 You can download our reference pre-trained models from [Google
-Drive](https://drive.google.com/file/d/1NvZkEqWNUBAfuhFPNGiCItjy4iU0UOy2).  This model was trained
-with `config/wireframe.yaml` for 312k iterations.
+Drive](https://drive.google.com/file/d/1NvZkEqWNUBAfuhFPNGiCItjy4iU0UOy2).  Those models were trained
+with `config/wireframe.yaml` for 312k iterations.  Use `process.py` and `eval.py` to evaluate the pre-trained models. **Do not try to unzip them!**
 
 ### Post Processing
 
@@ -174,7 +174,7 @@ If you find L-CNN useful in your research, please consider citing:
 @inproceedings{zhou2019end,
  author={Zhou, Yichao and Qi, Haozhi and Ma, Yi},
  title={End-to-End Wireframe Parsing},
- booktitle={ICCV},
+ booktitle={ICCV 2019},
  year={2019}
 }
 ```

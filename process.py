@@ -25,6 +25,7 @@ import os.path as osp
 import threading
 import subprocess
 
+import yaml
 import numpy as np
 import torch
 import matplotlib as mpl
@@ -85,7 +86,7 @@ def main():
         shuffle=False,
         batch_size=M.batch_size,
         collate_fn=collate,
-        num_workers=C.io.num_workers,
+        num_workers=C.io.num_workers if os.name != "nt" else 0,
         pin_memory=True,
     )
     os.makedirs(args["<output-dir>"], exist_ok=True)

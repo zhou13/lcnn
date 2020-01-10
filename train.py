@@ -94,7 +94,7 @@ def main():
     datadir = C.io.datadir
     kwargs = {
         "collate_fn": collate,
-        "num_workers": C.io.num_workers,
+        "num_workers": C.io.num_workers if os.name != "nt" else 0,
         "pin_memory": True,
     }
     train_loader = torch.utils.data.DataLoader(

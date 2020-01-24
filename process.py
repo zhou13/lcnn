@@ -99,7 +99,7 @@ def main():
                 "target": recursive_to(target, device),
                 "do_evaluation": True,
             }
-            H = model(input_dict)["heatmaps"]
+            H = model(input_dict)["preds"]
             for i in range(M.batch_size):
                 index = batch_idx * M.batch_size + i
                 np.savez(

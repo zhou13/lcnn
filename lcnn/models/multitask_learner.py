@@ -61,7 +61,7 @@ class MultitaskLearner(nn.Module):
             lmap = output[offset[0] : offset[1]].squeeze(0)
             joff = output[offset[1] : offset[2]].reshape(n_jtyp, 2, batch, row, col)
             if stack == 0:
-                result["heatmaps"] = {
+                result["preds"] = {
                     "jmap": jmap.permute(2, 0, 1, 3, 4).softmax(2)[:, :, 1],
                     "lmap": lmap.sigmoid(),
                     "joff": joff.permute(2, 0, 1, 3, 4).sigmoid() - 0.5,

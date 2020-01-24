@@ -122,7 +122,7 @@ class Trainer(object):
 
                 total_loss += self._loss(result)
 
-                H = result["heatmaps"]
+                H = result["preds"]
                 for i in range(H["jmap"].shape[0]):
                     index = batch_idx * self.batch_size + i
                     np.savez(

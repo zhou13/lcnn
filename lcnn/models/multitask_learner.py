@@ -37,7 +37,7 @@ class MultitaskLearner(nn.Module):
         self.num_class = sum(sum(head_size, []))
         self.head_off = np.cumsum([sum(h) for h in head_size])
 
-    def forward(self, input_dict, output_feature=True):
+    def forward(self, input_dict):
         image = input_dict["image"]
         outputs, feature = self.backbone(image)
         result = {"feature": feature}
@@ -66,6 +66,8 @@ class MultitaskLearner(nn.Module):
                     "lmap": lmap.sigmoid(),
                     "joff": joff.permute(2, 0, 1, 3, 4).sigmoid() - 0.5,
                 }
+                if input_dict["do_evaluation"]:
+                    return result
 
             L = OrderedDict()
             L["jmap"] = sum(

@@ -60,6 +60,7 @@ lcnn/                           # lcnn module so you can "import lcnn" in other 
     trainer.py                  # trainer
     config.py                   # global variables for configuration
     utils.py                    # misc functions
+demo.py                         # script for detecting wireframes for an image
 eval-sAP.py                     # script for sAP evaluation
 eval-APH.py                     # script for APH evaluation
 eval-mAPJ.py                    # script for mAPJ evaluation
@@ -85,6 +86,22 @@ conda install -y tensorboardx -c conda-forge
 conda install -y pyyaml docopt matplotlib scikit-image opencv
 mkdir data logs post
 ```
+
+### Pre-trained Models
+
+You can download our reference pre-trained models from [Google
+Drive](https://drive.google.com/file/d/1NvZkEqWNUBAfuhFPNGiCItjy4iU0UOy2).  Those models were
+trained with `config/wireframe.yaml` for 312k iterations.  Use `demo.py`, `process.py`, and
+`eval-*.py` to evaluate the pre-trained models. **Do not try to unzip them!**
+
+### Detect Wireframes for Your Own Images
+To test LCNN on your own images, you need download the pre-trained models and execute
+
+```Bash
+python ./demo.py -d 0 config/wireframe.yaml <path-to-pretrained-pth> <path-to-image>
+```
+Here, `-d 0` is specifying the GPU ID used for evaluation, and you can specify `-d ""` to force CPU inference.
+
 
 ### Downloading the Processed Dataset
 Make sure `curl` is installed on your system and execute
@@ -120,12 +137,6 @@ To train the neural network on GPU 0 (specified by `-d 0`) with the default para
 ```bash
 python ./train.py -d 0 --identifier baseline  config/wireframe.yaml
 ```
-
-### Pre-trained Models
-
-You can download our reference pre-trained models from [Google
-Drive](https://drive.google.com/file/d/1NvZkEqWNUBAfuhFPNGiCItjy4iU0UOy2).  Those models were trained
-with `config/wireframe.yaml` for 312k iterations.  Use `process.py` and `eval.py` to evaluate the pre-trained models. **Do not try to unzip them!**
 
 ### Post Processing
 

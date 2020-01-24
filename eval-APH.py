@@ -5,7 +5,7 @@ Usage:
     eval-APH.py (-h | --help )
 
 Examples:
-    python eval-APH.py logs/*
+    ./eval-APH.py post/RUN-ITERATION/0_010 post/RUN-ITERATION/0_010-APH
 
 Arguments:
     <src>                Source directory that stores preprocessed npz

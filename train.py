@@ -13,23 +13,23 @@ Options:
    -i --identifier <identifier>    Folder identifier [default: default-identifier]
 """
 
-import os
-import sys
+import datetime
 import glob
-import shlex
+import os
+import os.path as osp
+import platform
 import pprint
 import random
+import shlex
 import shutil
 import signal
-import os.path as osp
-import datetime
-import platform
-import threading
 import subprocess
+import sys
+import threading
 
-import yaml
 import numpy as np
 import torch
+import yaml
 from docopt import docopt
 
 import lcnn

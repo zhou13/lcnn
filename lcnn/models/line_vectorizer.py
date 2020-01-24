@@ -1,11 +1,10 @@
-import random
 import itertools
+import random
 from collections import defaultdict
 
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.parallel
 import torch.nn.functional as F
 
 from lcnn.config import M
@@ -96,18 +95,6 @@ class LineVectorizer(nn.Module):
         x = torch.cat([x, f], 1)
         x = self.fc2(x).flatten()
 
-        def sum_batch(x):
-            xs = [x[idx[i] : idx[i + 1]].sum()[None] for i in range(n_batch)]
-            return torch.cat(xs)
-
-        loss = self.loss(x, y)
-        lpos_mask, lneg_mask = y, 1 - y
-        loss_lpos, loss_lneg = loss * lpos_mask, loss * lneg_mask
-        lpos = sum_batch(loss_lpos) / sum_batch(lpos_mask).clamp(min=1)
-        lneg = sum_batch(loss_lneg) / sum_batch(lneg_mask).clamp(min=1)
-        result["losses"][0]["lpos"] = lpos * M.loss_weight["lpos"]
-        result["losses"][0]["lneg"] = lneg * M.loss_weight["lneg"]
-
         if input_dict["do_evaluation"]:
             p = torch.cat(ps)
             s = torch.sigmoid(x)
@@ -142,8 +129,21 @@ class LineVectorizer(nn.Module):
                     [jcs[i][1] for i in range(n_batch)]
                 )
         else:
-            if "preds" in result:
-                del result["preds"]
+            y = torch.cat(ys)
+            loss = self.loss(x, y)
+            lpos_mask, lneg_mask = y, 1 - y
+            loss_lpos, loss_lneg = loss * lpos_mask, loss * lneg_mask
+
+            def sum_batch(x):
+                xs = [x[idx[i] : idx[i + 1]].sum()[None] for i in range(n_batch)]
+                return torch.cat(xs)
+
+            lpos = sum_batch(loss_lpos) / sum_batch(lpos_mask).clamp(min=1)
+            lneg = sum_batch(loss_lneg) / sum_batch(lneg_mask).clamp(min=1)
+            result["losses"][0]["lpos"] = lpos * M.loss_weight["lpos"]
+            result["losses"][0]["lneg"] = lneg * M.loss_weight["lneg"]
+            del result["preds"]
+
         return result
 
     def sample_lines(self, meta, jmap, joff, do_evaluation):

@@ -18,20 +18,22 @@ Options:
                                      [default: 0.006,0.010,0.015]
 """
 
-import os
-import sys
 import glob
 import math
+import os
 import os.path as osp
+import sys
 
 import cv2
-import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 from docopt import docopt
 
+from lcnn.postprocess import postprocess
 from lcnn.utils import parmap
 
+PLTOPTS = {"color": "#33FFFF", "s": 1.2, "edgecolors": "none", "zorder": 5}
 cmap = plt.get_cmap("jet")
 norm = mpl.colors.Normalize(vmin=0.92, vmax=1.02)
 sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
@@ -56,82 +58,6 @@ def imshow(im):
     plt.xlim([-0.5, sizes[1] - 0.5])
     plt.ylim([sizes[0] - 0.5, -0.5])
     plt.imshow(im)
-
-
-def pline(x1, y1, x2, y2, x, y):
-    px = x2 - x1
-    py = y2 - y1
-    dd = px * px + py * py
-    u = ((x - x1) * px + (y - y1) * py) / max(1e-9, float(dd))
-    dx = x1 + u * px - x
-    dy = y1 + u * py - y
-    return dx * dx + dy * dy
-
-
-def psegment(x1, y1, x2, y2, x, y):
-    px = x2 - x1
-    py = y2 - y1
-    dd = px * px + py * py
-    u = max(min(((x - x1) * px + (y - y1) * py) / float(dd), 1), 0)
-    dx = x1 + u * px - x
-    dy = y1 + u * py - y
-    return dx * dx + dy * dy
-
-
-def plambda(x1, y1, x2, y2, x, y):
-    px = x2 - x1
-    py = y2 - y1
-    dd = px * px + py * py
-    return ((x - x1) * px + (y - y1) * py) / max(1e-9, float(dd))
-
-
-def process(lines, scores, threshold=0.01, tol=1e9, do_clip=False):
-    nlines, nscores = [], []
-    for (p, q), score in zip(lines, scores):
-        start, end = 0, 1
-        for a, b in nlines:
-            if (
-                min(
-                    max(pline(*p, *q, *a), pline(*p, *q, *b)),
-                    max(pline(*a, *b, *p), pline(*a, *b, *q)),
-                )
-                > threshold ** 2
-            ):
-                continue
-            lambda_a = plambda(*p, *q, *a)
-            lambda_b = plambda(*p, *q, *b)
-            if lambda_a > lambda_b:
-                lambda_a, lambda_b = lambda_b, lambda_a
-            lambda_a -= tol
-            lambda_b += tol
-
-            # case 1: skip (if not do_clip)
-            if start < lambda_a and lambda_b < end:
-                continue
-
-            # not intersect
-            if lambda_b < start or lambda_a > end:
-                continue
-
-            # cover
-            if lambda_a <= start and end <= lambda_b:
-                start = 10
-                break
-
-            # case 2 & 3:
-            if lambda_a <= start and start <= lambda_b:
-                start = lambda_b
-            if lambda_a <= end and end <= lambda_b:
-                end = lambda_a
-
-            if start >= end:
-                break
-
-        if start >= end:
-            continue
-        nlines.append(np.array([p + (q - p) * start, p + (q - p) * end]))
-        nscores.append(score)
-    return np.array(nlines), np.array(nscores)
 
 
 def main():
@@ -167,13 +93,12 @@ def main():
         diag = (im.shape[0] ** 2 + im.shape[1] ** 2) ** 0.5
 
         for threshold in thresholds:
-            nlines, nscores = process(lines, scores, diag * threshold, 0, False)
+            nlines, nscores = postprocess(lines, scores, diag * threshold, 0, False)
 
             outdir = osp.join(prefix, f"{threshold:.3f}".replace(".", "_"))
             os.makedirs(outdir, exist_ok=True)
             npz_name = osp.join(outdir, osp.split(fname)[-1])
 
-            PLTOPTS = {"color": "#33FFFF", "s": 1.2, "edgecolors": "none", "zorder": 5}
             if args["--plot"]:
                 # plot gt
                 imshow(im[:, :, ::-1])

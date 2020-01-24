@@ -1,23 +1,23 @@
-import os
-import time
 import atexit
+import os
+import os.path as osp
 import shutil
 import signal
-import os.path as osp
-import threading
 import subprocess
+import threading
+import time
 from timeit import default_timer as timer
 
-import numpy as np
-import torch
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
+import torch
 import torch.nn.functional as F
 from skimage import io
 from tensorboardX import SummaryWriter
 
-from lcnn.utils import recursive_to
 from lcnn.config import C
+from lcnn.utils import recursive_to
 
 
 class Trainer(object):

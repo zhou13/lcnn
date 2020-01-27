@@ -114,7 +114,7 @@ cd ..
 ```
 
 If `gdrive-download.sh` does not work for you, you can download the pre-processed dataset
-`wireframe.tar.xz`  manually from [Google
+`wireframe.tar.xz` manually from [Google
 Drive](https://drive.google.com/drive/u/1/folders/1rXLAh5VIj8jwf8vLfuZncStihRO2chFr) and proceed
 accordingly.
 
@@ -135,7 +135,14 @@ dataset/wireframe.py data/wireframe_raw data/wireframe
 ### Training
 To train the neural network on GPU 0 (specified by `-d 0`) with the default parameters, execute
 ```bash
-python ./train.py -d 0 --identifier baseline  config/wireframe.yaml
+python ./train.py -d 0 --identifier baseline config/wireframe.yaml
+```
+
+## Testing Pretrained Models
+To generate wireframes on the validation dataset with the pretrained model, execute
+
+```bash
+./process.py config/wireframe.yaml <path-to-checkpoint.pth.tar> data/wireframe logs/pretrained-model/npz/000312000
 ```
 
 ### Post Processing

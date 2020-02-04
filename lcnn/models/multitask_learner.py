@@ -66,7 +66,7 @@ class MultitaskLearner(nn.Module):
                     "lmap": lmap.sigmoid(),
                     "joff": joff.permute(2, 0, 1, 3, 4).sigmoid() - 0.5,
                 }
-                if input_dict["do_evaluation"]:
+                if input_dict["mode"] == "testing":
                     return result
 
             L = OrderedDict()

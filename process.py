@@ -97,7 +97,7 @@ def main():
                 "image": recursive_to(image, device),
                 "meta": recursive_to(meta, device),
                 "target": recursive_to(target, device),
-                "do_evaluation": True,
+                "mode": "validation",
             }
             H = model(input_dict)["preds"]
             for i in range(M.batch_size):

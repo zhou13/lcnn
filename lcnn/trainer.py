@@ -116,7 +116,7 @@ class Trainer(object):
                     "image": recursive_to(image, self.device),
                     "meta": recursive_to(meta, self.device),
                     "target": recursive_to(target, self.device),
-                    "do_evaluation": True,
+                    "mode": "validation",
                 }
                 result = self.model(input_dict)
 
@@ -173,7 +173,7 @@ class Trainer(object):
                 "image": recursive_to(image, self.device),
                 "meta": recursive_to(meta, self.device),
                 "target": recursive_to(target, self.device),
-                "do_evaluation": False,
+                "mode": "training",
             }
             result = self.model(input_dict)
 

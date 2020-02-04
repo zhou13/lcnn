@@ -107,7 +107,7 @@ def main():
                     "jmap": torch.zeros([1, 1, 128, 128]).to(device),
                     "joff": torch.zeros([1, 1, 2, 128, 128]).to(device),
                 },
-                "do_evaluation": True,
+                "mode": "testing",
             }
             H = model(input_dict)["preds"]
 

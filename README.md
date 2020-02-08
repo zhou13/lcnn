@@ -14,6 +14,8 @@ This repository contains the official PyTorch implementation of the paper:  *[Yi
 | :--------------------------------------------------: | :-----------------------------------------------: | :-------------------------------------------------: | :------------------------------------------: | :----------------------------------------: |
 | [LSD](https://ieeexplore.ieee.org/document/4731268/) | [AFM](https://github.com/cherubicXN/afm_cvpr2019) | [Wireframe](https://github.com/huangkuns/wireframe) |                  **L-CNN**                   |                Ground Truth                |
 
+More random sampled results can be found in the [supplementary material](https://yichaozhou.com/publication/1904lcnn/appendix.pdf) of the paper.
+
 ### Quantitative Measures
 
 The following table reports the performance metrics of several wireframe and line detectors on the [ShanghaiTech dataset](https://github.com/huangkuns/wireframe).

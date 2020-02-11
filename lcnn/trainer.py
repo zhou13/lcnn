@@ -16,7 +16,7 @@ import torch.nn.functional as F
 from skimage import io
 from tensorboardX import SummaryWriter
 
-from lcnn.config import C
+from lcnn.config import C, M
 from lcnn.utils import recursive_to
 
 
@@ -103,8 +103,8 @@ class Trainer(object):
         training = self.model.training
         self.model.eval()
 
-        viz = osp.join(self.out, "viz", f"{self.iteration * self.batch_size:09d}")
-        npz = osp.join(self.out, "npz", f"{self.iteration * self.batch_size:09d}")
+        viz = osp.join(self.out, "viz", f"{self.iteration * M.batch_size_eval:09d}")
+        npz = osp.join(self.out, "npz", f"{self.iteration * M.batch_size_eval:09d}")
         osp.exists(viz) or os.makedirs(viz)
         osp.exists(npz) or os.makedirs(npz)
 
@@ -124,7 +124,7 @@ class Trainer(object):
 
                 H = result["preds"]
                 for i in range(H["jmap"].shape[0]):
-                    index = batch_idx * self.batch_size + i
+                    index = batch_idx * M.batch_size_eval + i
                     np.savez(
                         f"{npz}/{index:06}.npz",
                         **{k: v[i].cpu().numpy() for k, v in H.items()},

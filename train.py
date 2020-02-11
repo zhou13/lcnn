@@ -104,7 +104,10 @@ def main():
         **kwargs,
     )
     val_loader = torch.utils.data.DataLoader(
-        WireframeDataset(datadir, split="valid"), shuffle=False, batch_size=2, **kwargs
+        WireframeDataset(datadir, split="valid"),
+        shuffle=False,
+        batch_size=M.batch_size_eval,
+        **kwargs,
     )
     epoch_size = len(train_loader)
     # print("epoch_size (train):", epoch_size)

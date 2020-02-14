@@ -144,17 +144,17 @@ class Trainer(object):
                 "model_state_dict": self.model.state_dict(),
                 "best_mean_loss": self.best_mean_loss,
             },
-            osp.join(self.out, "checkpoint_latest.pth.tar"),
+            osp.join(self.out, "checkpoint_latest.pth"),
         )
         shutil.copy(
-            osp.join(self.out, "checkpoint_latest.pth.tar"),
-            osp.join(npz, "checkpoint.pth.tar"),
+            osp.join(self.out, "checkpoint_latest.pth"),
+            osp.join(npz, "checkpoint.pth"),
         )
         if self.mean_loss < self.best_mean_loss:
             self.best_mean_loss = self.mean_loss
             shutil.copy(
-                osp.join(self.out, "checkpoint_latest.pth.tar"),
-                osp.join(self.out, "checkpoint_best.pth.tar"),
+                osp.join(self.out, "checkpoint_latest.pth"),
+                osp.join(self.out, "checkpoint_best.pth"),
             )
 
         if training:

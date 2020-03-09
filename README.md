@@ -135,6 +135,8 @@ dataset/wireframe.py data/wireframe_raw data/wireframe
 ```
 
 ### Training
+The default batch size assumes your have a graphics card with 12GB video memory, e.g., GTX 1080Ti or RTX 2080Ti. You may reduce the batch size if you have less video memory.
+
 To train the neural network on GPU 0 (specified by `-d 0`) with the default parameters, execute
 ```bash
 python ./train.py -d 0 --identifier baseline config/wireframe.yaml

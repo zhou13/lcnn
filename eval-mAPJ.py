@@ -14,15 +14,15 @@ Options:
    -h --help                         Show this screen.
 """
 
-import os
-import re
 import glob
+import os
 import os.path as osp
+import re
 from collections import defaultdict
 
 import cv2
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from docopt import docopt
 from scipy.io import loadmat
 
@@ -119,9 +119,14 @@ def evaluate_afm(im_list, gt_list):
             afm_score = fafm["score"]
 
         jun_c = []
+        # plt.imshow(im)
         for line, score in zip(afm_line, afm_score):
             jun_c.append(list(line[0]) + [score])
             jun_c.append(list(line[1]) + [score])
+            # plt.plot([line[0][1], line[1][1]], [line[0][0], line[1][0]], c="blue")
+        # for line in gt_line:
+        #     plt.plot([line[0][1], line[1][1]], [line[0][0], line[1][0]], c="red")
+        # plt.show()
         jun_c = np.array(jun_c)
 
         all_junc = np.vstack((all_junc, jun_c))
@@ -140,26 +145,26 @@ def load_wf():
             0.01,
             0.1,
             0.5,
-            10,
-            100,
-            102400,
-            150,
-            12800,
-            1600,
             2,
-            20,
-            200,
-            204800,
-            25600,
-            30,
-            3200,
-            400,
-            50,
-            51200,
             6,
-            6400,
+            10,
+            20,
+            30,
+            50,
             80,
+            100,
+            150,
+            200,
+            400,
             800,
+            3200,
+            1600,
+            6400,
+            51200,
+            12800,
+            25600,
+            102400,
+            204800,
         ]
     ):
         mats = sorted(glob.glob(f"{WF}/{thres}/*.mat"))
@@ -175,11 +180,11 @@ def load_wf():
 
 
 def main():
-    args = docopt(__doc__)
+    # args = docopt(__doc__)
     gt_list = sorted(glob.glob(GT))
     im_list = sorted(glob.glob(IM))
-    # evaluate_afm(im_list, gt_list)
-    evaluate_wireframe(im_list, gt_list)
+    evaluate_afm(im_list, gt_list)
+    # evaluate_wireframe(im_list, gt_list)
 
     # for path in args["<path>"]:
     #     print("Evaluating", path)

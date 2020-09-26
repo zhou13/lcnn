@@ -29,8 +29,8 @@ The following table reports the performance metrics of several wireframe and lin
 
 ### Precision-Recall Curves
 <p align="center">
-<img src="figs/PR-APH.svg"  width="420">
-<img src="figs/PR-sAP10.svg" width="420">
+<img src="figs/PR-APH.svg"  width="400">
+<img src="figs/PR-sAP10.svg" width="400">
 </p>
 
 ## Code Structure

@@ -75,7 +75,7 @@ process.py                      # script for processing a dataset from a checkpo
 
 ### Installation
 
-For the ease of reproducibility, you are suggested to install [miniconda](https://docs.conda.io/en/latest/miniconda.html) (or [anaconda](https://www.anaconda.com/distribution/) if you prefer) before following executing the following commands. 
+For the ease of reproducibility, you are suggested to install [miniconda](https://docs.conda.io/en/latest/miniconda.html) before following executing the following commands. 
 
 ```bash
 git clone https://github.com/zhou13/lcnn

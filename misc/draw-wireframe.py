@@ -56,8 +56,8 @@ def main():
 
         with np.load(gt_name) as fgt:
             gt_line = fgt["lpos"][:, :, :2]
-            gt_line[:, :, 0] *= img.shape[0] / 128
-            gt_line[:, :, 1] *= img.shape[1] / 128
+            gt_line[:, :, 0] *= img.shape[0] / int(NORMALIZATION_HEIGHT / 4)
+            gt_line[:, :, 1] *= img.shape[1] / int(NORMALIZATION_WIDTH / 4)
 
         with np.load(afm_name) as fafm:
             afm_line = fafm["lines"].reshape(-1, 2, 2)[:, :, ::-1]

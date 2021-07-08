@@ -11,6 +11,7 @@ from skimage import io
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import default_collate
 
+from dataset.constants import NORMALIZATION_HEIGHT, NORMALIZATION_WIDTH
 from lcnn.config import M
 
 
@@ -60,8 +61,10 @@ class WireframeDataset(Dataset):
                     lpre[i] = lpre[i, ::-1]
             ldir = lpre[:, 0, :2] - lpre[:, 1, :2]
             ldir /= np.clip(LA.norm(ldir, axis=1, keepdims=True), 1e-6, None)
+
+            feat_1 = (lpre[:, :, :2] / (int(NORMALIZATION_HEIGHT / 4),int(NORMALIZATION_WIDTH / 4))).astype(np.float32)
             feat = [
-                lpre[:, :, :2].reshape(-1, 4) / 128 * M.use_cood,
+                feat_1.reshape(-1, 4) * M.use_cood,
                 ldir * M.use_slop,
                 lpre[:, :, 2],
             ]

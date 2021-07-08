@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from dataset.constants import NORMALIZATION_WIDTH, NORMALIZATION_HEIGHT
 from lcnn.config import M
 
 FEATURE_DIM = 8
@@ -67,20 +68,20 @@ class LineVectorizer(nn.Module):
 
             p = p[:, 0:1, :] * self.lambda_ + p[:, 1:2, :] * (1 - self.lambda_) - 0.5
             p = p.reshape(-1, 2)  # [N_LINE x N_POINT, 2_XY]
-            px, py = p[:, 0].contiguous(), p[:, 1].contiguous()
-            px0 = px.floor().clamp(min=0, max=127)
-            py0 = py.floor().clamp(min=0, max=127)
-            px1 = (px0 + 1).clamp(min=0, max=127)
-            py1 = (py0 + 1).clamp(min=0, max=127)
+            px, py = p[:, 1].contiguous(), p[:, 0].contiguous()
+            px0 = px.floor().clamp(min=0, max=int(NORMALIZATION_WIDTH / 4)-1)
+            py0 = py.floor().clamp(min=0, max=int(NORMALIZATION_HEIGHT / 4)-1)
+            px1 = (px0 + 1).clamp(min=0, max=int(NORMALIZATION_WIDTH / 4)-1)
+            py1 = (py0 + 1).clamp(min=0, max=int(NORMALIZATION_HEIGHT / 4)-1)
             px0l, py0l, px1l, py1l = px0.long(), py0.long(), px1.long(), py1.long()
 
             # xp: [N_LINE, N_CHANNEL, N_POINT]
             xp = (
                 (
-                    x[i, :, px0l, py0l] * (px1 - px) * (py1 - py)
-                    + x[i, :, px1l, py0l] * (px - px0) * (py1 - py)
-                    + x[i, :, px0l, py1l] * (px1 - px) * (py - py0)
-                    + x[i, :, px1l, py1l] * (px - px0) * (py - py0)
+                    x[i, :, py0l, px0l] * (px1 - px) * (py1 - py)
+                    + x[i, :, py0l, px1l] * (px - px0) * (py1 - py)
+                    + x[i, :, py1l, px0l] * (px1 - px) * (py - py0)
+                    + x[i, :, py1l, px1l] * (px - px0) * (py - py0)
                 )
                 .reshape(n_channel, -1, M.n_pts0)
                 .permute(1, 0, 2)
@@ -171,8 +172,8 @@ class LineVectorizer(nn.Module):
 
             # index: [N_TYPE, K]
             score, index = torch.topk(jmap, k=K)
-            y = (index / 128).float() + torch.gather(joff[:, 0], 1, index) + 0.5
-            x = (index % 128).float() + torch.gather(joff[:, 1], 1, index) + 0.5
+            y = (index / int(NORMALIZATION_WIDTH / 4)).float() + torch.gather(joff[:, 0], 1, index) + 0.5
+            x = (index % int(NORMALIZATION_WIDTH / 4)).float() + torch.gather(joff[:, 1], 1, index) + 0.5
 
             # xy: [N_TYPE, K, 2]
             xy = torch.cat([y[..., None], x[..., None]], dim=-1)
@@ -230,8 +231,8 @@ class LineVectorizer(nn.Module):
             u2v /= torch.sqrt((u2v ** 2).sum(-1, keepdim=True)).clamp(min=1e-6)
             feat = torch.cat(
                 [
-                    xyu / 128 * M.use_cood,
-                    xyv / 128 * M.use_cood,
+                    xyu / torch.tensor([int(NORMALIZATION_HEIGHT / 4),int(NORMALIZATION_WIDTH / 4)]).to(device) * M.use_cood,
+                    xyv / torch.tensor([int(NORMALIZATION_HEIGHT / 4),int(NORMALIZATION_WIDTH / 4)]).to(device) * M.use_cood,
                     u2v * M.use_slop,
                     (u[:, None] > K).float(),
                     (v[:, None] > K).float(),

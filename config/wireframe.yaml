@@ -1,6 +1,6 @@
 io:
   logdir: logs/
-  datadir: data/wireframe/
+  datadir: /home/zengxh/datasets/creepageDistance_wireframe/
   resume_from:
   num_workers: 4
   tensorboard_port: 0

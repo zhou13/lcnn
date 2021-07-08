@@ -101,6 +101,7 @@ To test LCNN on your own images, you need download the pre-trained models and ex
 
 ```Bash
 python ./demo.py -d 0 config/wireframe.yaml <path-to-pretrained-pth> <path-to-image>
+python ./demo.py -d 0 config/wireframe.yaml /home/zengxh/workspace/lcnn/config/190418-201834-f8934c6-lr4d10-312k.pth.tar /home/zengxh/workspace/lcnn/data/wireframe/train/00559828_3.png
 ```
 Here, `-d 0` is specifying the GPU ID used for evaluation, and you can specify `-d ""` to force CPU inference.
 
@@ -200,3 +201,10 @@ If you find L-CNN useful in your research, please consider citing:
  year={2019}
 }
 ```
+
+/home/zengxh/anaconda3/envs/CreepageDistance/bin/python3.8 /home/zengxh/workspace/lcnn/dataset/train_test_split.py
+/home/zengxh/anaconda3/envs/CreepageDistance/bin/python3.8 /home/zengxh/workspace/lcnn/dataset/wireframe.py /home/zengxh/datasets/creepageDistance /home/zengxh/datasets/creepageDistance_wireframe
+/home/zengxh/anaconda3/envs/CreepageDistance/bin/python3.8 /home/zengxh/workspace/lcnn/train.py -d 0 --identifier baseline config/wireframe.yaml
+/home/zengxh/anaconda3/envs/CreepageDistance/bin/python3.8 /home/zengxh/workspace/lcnn/demo.py -d 0 config/wireframe.yaml /home/zengxh/workspace/lcnn/logs/210706-112447-88f281a-baseline/checkpoint_best.pth /home/zengxh/datasets/creepageDistance_wireframe/valid/7507639237000304_0_t_0.png
+
+

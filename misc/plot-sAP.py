@@ -50,8 +50,8 @@ def wireframe_score(T=10):
         for i, (gt_name, matf) in enumerate(zip(gts, mat_files)):
             line_pred = scipy.io.loadmat(matf)["lines"].reshape(-1, 2, 2)
             img = cv2.imread(matf.replace(".mat", ".jpg"))
-            line_pred[:, :, 0] *= 128 / img.shape[1]
-            line_pred[:, :, 1] *= 128 / img.shape[0]
+            line_pred[:, :, 0] *= int(NORMALIZATION_WIDTH / 4) / img.shape[1]
+            line_pred[:, :, 1] *= int(NORMALIZATION_HEIGHT / 4) / img.shape[0]
             line_pred = line_pred[:, :, ::-1]
 
             with np.load(gt_name) as fgt:
@@ -117,8 +117,8 @@ def line_score(threshold=10):
             afm_score = -fafm["scores"]
             h = fafm["h"]
             w = fafm["w"]
-        afm_line[:, :, 0] *= 128 / h
-        afm_line[:, :, 1] *= 128 / w
+        afm_line[:, :, 0] *= int(NORMALIZATION_HEIGHT / 4) / h
+        afm_line[:, :, 1] *= int(NORMALIZATION_WIDTH / 4) / w
         for i, ((a, b), s) in enumerate(zip(lcnn_line, lcnn_score)):
             if i > 0 and (lcnn_line[i] == lcnn_line[0]).all():
                 lcnn_line = lcnn_line[:i]

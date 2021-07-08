@@ -29,6 +29,7 @@ import yaml
 from docopt import docopt
 
 import lcnn
+from dataset.constants import NORMALIZATION_WIDTH, NORMALIZATION_HEIGHT
 from lcnn.config import C, M
 from lcnn.models.line_vectorizer import LineVectorizer
 from lcnn.models.multitask_learner import MultitaskHead, MultitaskLearner
@@ -89,7 +90,8 @@ def main():
         if im.ndim == 2:
             im = np.repeat(im[:, :, None], 3, 2)
         im = im[:, :, :3]
-        im_resized = skimage.transform.resize(im, (512, 512)) * 255
+        im_resized = skimage.transform.resize(im, (NORMALIZATION_HEIGHT,NORMALIZATION_WIDTH )) * 255
+        # skimage.io.imsave('cat.jpg', im_resized)
         image = (im_resized - M.image.mean) / M.image.stddev
         image = torch.from_numpy(np.rollaxis(image, 2)[None].copy()).float()
         with torch.no_grad():
@@ -104,14 +106,14 @@ def main():
                     }
                 ],
                 "target": {
-                    "jmap": torch.zeros([1, 1, 128, 128]).to(device),
-                    "joff": torch.zeros([1, 1, 2, 128, 128]).to(device),
+                    "jmap": torch.zeros([1, 1, int(NORMALIZATION_HEIGHT / 4), int(NORMALIZATION_WIDTH / 4)]).to(device),
+                    "joff": torch.zeros([1, 1, 2, int(NORMALIZATION_HEIGHT / 4), int(NORMALIZATION_WIDTH / 4)]).to(device),
                 },
                 "mode": "testing",
             }
             H = model(input_dict)["preds"]
 
-        lines = H["lines"][0].cpu().numpy() / 128 * im.shape[:2]
+        lines = H["lines"][0].cpu().numpy() / (int(NORMALIZATION_HEIGHT / 4),int(NORMALIZATION_WIDTH / 4)) * im.shape[:2]
         scores = H["score"][0].cpu().numpy()
         for i in range(1, len(lines)):
             if (lines[i] == lines[0]).all():
@@ -122,23 +124,23 @@ def main():
         # postprocess lines to remove overlapped lines
         diag = (im.shape[0] ** 2 + im.shape[1] ** 2) ** 0.5
         nlines, nscores = postprocess(lines, scores, diag * 0.01, 0, False)
-
-        for i, t in enumerate([0.94, 0.95, 0.96, 0.97, 0.98, 0.99]):
-            plt.gca().set_axis_off()
-            plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
-            plt.margins(0, 0)
-            for (a, b), s in zip(nlines, nscores):
-                if s < t:
-                    continue
-                plt.plot([a[1], b[1]], [a[0], b[0]], c=c(s), linewidth=2, zorder=s)
-                plt.scatter(a[1], a[0], **PLTOPTS)
-                plt.scatter(b[1], b[0], **PLTOPTS)
-            plt.gca().xaxis.set_major_locator(plt.NullLocator())
-            plt.gca().yaxis.set_major_locator(plt.NullLocator())
-            plt.imshow(im)
-            plt.savefig(imname.replace(".png", f"-{t:.02f}.svg"), bbox_inches="tight")
-            plt.show()
-            plt.close()
+        print(nlines)
+        # for i, t in enumerate([0.01, 0.95, 0.96, 0.97, 0.98, 0.99]):
+        plt.gca().set_axis_off()
+        plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
+        plt.margins(0, 0)
+        for (a, b), s in zip(nlines, nscores):
+            # if s < t:
+            #     continue
+            plt.plot([a[1], b[1]], [a[0], b[0]], c=c(s), linewidth=2, zorder=s)
+            plt.scatter(a[1], a[0], **PLTOPTS)
+            plt.scatter(b[1], b[0], **PLTOPTS)
+        plt.gca().xaxis.set_major_locator(plt.NullLocator())
+        plt.gca().yaxis.set_major_locator(plt.NullLocator())
+        plt.imshow(im)
+        plt.savefig(imname.replace(".png", f"-{0.1:.02f}.svg"), bbox_inches="tight")
+        plt.show()
+        plt.close()
 
 
 if __name__ == "__main__":

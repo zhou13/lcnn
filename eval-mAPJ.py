@@ -84,7 +84,7 @@ def evaluate_wireframe(im_list, gt_list, juncs_wf):
     all_jc_gt = []
     for i, (im_fn, gt_fn, junc_wf) in enumerate(zip(im_list, gt_list, juncs_wf)):
         im = cv2.imread(im_fn)
-        im = cv2.resize(im, (128, 128))
+        im = cv2.resize(im, (int(NORMALIZATION_WIDTH / 4), int(NORMALIZATION_HEIGHT / 4)))
 
         with np.load(gt_fn) as npz:
             junc_gt = npz["junc"][:, :2]
@@ -107,7 +107,7 @@ def evaluate_afm(im_list, gt_list, afm):
     afm.sort()
     for i, (im_fn, gt_fn, afm_fn) in enumerate(zip(im_list, gt_list, afm)):
         im = cv2.imread(im_fn)
-        im = cv2.resize(im, (128, 128))
+        im = cv2.resize(im, (int(NORMALIZATION_WIDTH / 4), int(NORMALIZATION_HEIGHT / 4)))
 
         with np.load(gt_fn) as npz:
             junc_gt = npz["junc"][:, :2]
@@ -117,8 +117,9 @@ def evaluate_afm(im_list, gt_list, afm):
             afm_score = -fafm["scores"]
             h = fafm["h"]
             w = fafm["w"]
-        afm_line[:, :, 0] *= 128 / h
-        afm_line[:, :, 1] *= 128 / w
+
+        afm_line[:, :, 0] *= int(NORMALIZATION_HEIGHT / 4) / h
+        afm_line[:, :, 1] *= int(NORMALIZATION_WIDTH / 4) / w
 
         jun_c = []
         for line, score in zip(afm_line, afm_score):
@@ -143,8 +144,9 @@ def load_wf():
             juncs = loadmat(mat)["junctions"]
             if len(juncs) == 0:
                 continue
-            juncs[:, 0] *= 128 / img.shape[1]
-            juncs[:, 1] *= 128 / img.shape[0]
+
+            juncs[:, 0] *= int(NORMALIZATION_WIDTH / 4) / img.shape[1]
+            juncs[:, 1] *= int(NORMALIZATION_HEIGHT / 4) / img.shape[0]
             # juncs += 0.5
             for j in juncs:
                 pts[i][tuple(j)] += 1

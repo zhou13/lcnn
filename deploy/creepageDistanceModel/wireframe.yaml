@@ -1,27 +1,13 @@
-io:
-  logdir: logs/
-  datadir: /home/zengxh/datasets/creepageDistance_wireframe/
-  resume_from:
-  num_workers: 4
-  tensorboard_port: 0
-  validation_interval: 24000
-
 model:
   image:
       mean: [109.730, 103.832, 98.681]
       stddev: [22.275, 22.124, 23.229]
 
-  batch_size: 6
+  batch_size: 32
   batch_size_eval: 2
 
   # backbone multi-task parameters
   head_size: [[2], [1], [2]]
-  loss_weight:
-    jmap: 8.0
-    lmap: 0.5
-    joff: 0.25
-    lpos: 1
-    lneg: 1
 
   # backbone parameters
   backbone: stacked_hourglass
@@ -35,10 +21,10 @@ model:
   n_stc_negl: 40
 
   ## dynamic sampler
-  n_dyn_junc: 300
-  n_dyn_posl: 300
+  n_dyn_junc: 100
+  n_dyn_posl: 100
   n_dyn_negl: 80
-  n_dyn_othr: 600
+  n_dyn_othr: 200
 
   # LOIPool layer parameters
   n_pts0: 32
@@ -50,20 +36,13 @@ model:
 
   # maximum junction and line outputs
   n_out_junc: 250
-  n_out_line: 2500
+  n_out_line: 50
 
   # additional ablation study parameters
   use_cood: 0
   use_slop: 0
-  use_conv: 0
 
   # junction threashold for evaluation (See #5)
   eval_junc_thres: 0.008
 
-optim:
-  name: Adam
-  lr: 4.0e-4
-  amsgrad: True
-  weight_decay: 1.0e-4
-  max_epoch: 24
-  lr_decay_epoch: 10
+

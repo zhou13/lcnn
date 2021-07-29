@@ -1,0 +1,9 @@
+datasets:
+  lr:
+    allDatas: /home/zengxh/medias/data/ext/creepageDistance/datasets/lr/org
+    # h*w
+    img_size: [512,64]
+  tb:
+    allDatas: /home/zengxh/medias/data/ext/creepageDistance/datasets/tb/org
+    # h*w
+    img_size: [512,64]

@@ -80,16 +80,16 @@ def main():
             scores = f["score"]
         with np.load(gtname) as f:
             gtlines = f["lpos"][:, :, :2]
-        gtlines[:, :, 0] *= im.shape[0] / 128
-        gtlines[:, :, 1] *= im.shape[1] / 128
+        gtlines[:, :, 0] *= im.shape[0] / int(NORMALIZATION_HEIGHT / 4)
+        gtlines[:, :, 1] *= im.shape[1] / int(NORMALIZATION_WIDTH / 4)
         for i in range(1, len(lines)):
             if (lines[i] == lines[0]).all():
                 lines = lines[:i]
                 scores = scores[:i]
                 break
 
-        lines[:, :, 0] *= im.shape[0] / 128
-        lines[:, :, 1] *= im.shape[1] / 128
+        lines[:, :, 0] *= im.shape[0] / int(NORMALIZATION_HEIGHT / 4)
+        lines[:, :, 1] *= im.shape[1] / int(NORMALIZATION_WIDTH / 4)
         diag = (im.shape[0] ** 2 + im.shape[1] ** 2) ** 0.5
 
         for threshold in thresholds:
@@ -119,8 +119,8 @@ def main():
                         npz_name.replace(".npz", f"_{i}.png"), dpi=500, bbox_inches=0
                     )
 
-            nlines[:, :, 0] *= 128 / im.shape[0]
-            nlines[:, :, 1] *= 128 / im.shape[1]
+            nlines[:, :, 0] *= int(NORMALIZATION_HEIGHT / 4) / im.shape[0]
+            nlines[:, :, 1] *= int(NORMALIZATION_WIDTH / 4) / im.shape[1]
             np.savez_compressed(npz_name, lines=nlines, score=nscores)
 
     parmap(handle, inputs, 12)

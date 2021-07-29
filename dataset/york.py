@@ -30,6 +30,8 @@ from docopt import docopt
 from scipy.io import loadmat
 from scipy.ndimage import zoom
 
+from dataset.constants import NORMALIZATION_WIDTH, NORMALIZATION_HEIGHT
+
 try:
     sys.path.append(".")
     sys.path.append("..")
@@ -47,13 +49,13 @@ def to_int(x):
 
 
 def save_heatmap(prefix, image, lines):
-    im_rescale = (512, 512)
-    heatmap_scale = (128, 128)
+    im_rescale = (NORMALIZATION_WIDTH, NORMALIZATION_HEIGHT)
+    heatmap_scale = (int(NORMALIZATION_WIDTH / 4), int(NORMALIZATION_HEIGHT / 4))
 
     fy, fx = heatmap_scale[1] / image.shape[0], heatmap_scale[0] / image.shape[1]
-    jmap = np.zeros((1,) + heatmap_scale, dtype=np.float32)
-    joff = np.zeros((1, 2) + heatmap_scale, dtype=np.float32)
-    lmap = np.zeros(heatmap_scale, dtype=np.float32)
+    jmap = np.zeros((1,) + (heatmap_scale[1],heatmap_scale[0]), dtype=np.float32)
+    joff = np.zeros((1, 2) + (heatmap_scale[1],heatmap_scale[0]), dtype=np.float32)
+    lmap = np.zeros((heatmap_scale[1],heatmap_scale[0]), dtype=np.float32)
 
     lines[:, :, 0] = np.clip(lines[:, :, 0] * fx, 0, heatmap_scale[0] - 1e-4)
     lines[:, :, 1] = np.clip(lines[:, :, 1] * fy, 0, heatmap_scale[1] - 1e-4)

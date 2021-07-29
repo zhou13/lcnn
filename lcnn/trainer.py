@@ -18,6 +18,7 @@ from tensorboardX import SummaryWriter
 
 from lcnn.config import C, M
 from lcnn.utils import recursive_to
+from python_developer_tools.files.common import mkdir
 
 
 class Trainer(object):
@@ -57,8 +58,9 @@ class Trainer(object):
             os.makedirs(board_out)
         self.writer = SummaryWriter(board_out)
         os.environ["CUDA_VISIBLE_DEVICES"] = ""
+        mkdir(os.path.abspath(board_out))
         p = subprocess.Popen(
-            ["tensorboard", f"--logdir={board_out}", f"--port={C.io.tensorboard_port}"]
+            ["/home/zengxh/anaconda3/envs/CreepageDistance/bin/tensorboard", f"--logdir={os.path.abspath(board_out)}", f"--port={C.io.tensorboard_port}","--host=0.0.0.0"]
         )
 
         def killme():
@@ -323,6 +325,7 @@ def pprint(*args):
 
 def _launch_tensorboard(board_out, port, out):
     os.environ["CUDA_VISIBLE_DEVICES"] = ""
+    mkdir(board_out)
     p = subprocess.Popen(["tensorboard", f"--logdir={board_out}", f"--port={port}"])
 
     def kill():

@@ -1,0 +1,48 @@
+model:
+  image:
+      mean: [109.730, 103.832, 98.681]
+      stddev: [22.275, 22.124, 23.229]
+
+  batch_size: 32
+  batch_size_eval: 2
+
+  # backbone multi-task parameters
+  head_size: [[2], [1], [2]]
+
+  # backbone parameters
+  backbone: stacked_hourglass
+  depth: 4
+  num_stacks: 2
+  num_blocks: 1
+
+  # sampler parameters
+  ## static sampler
+  n_stc_posl: 300
+  n_stc_negl: 40
+
+  ## dynamic sampler
+  n_dyn_junc: 100
+  n_dyn_posl: 100
+  n_dyn_negl: 80
+  n_dyn_othr: 200
+
+  # LOIPool layer parameters
+  n_pts0: 32
+  n_pts1: 8
+
+  # line verification network parameters
+  dim_loi: 128
+  dim_fc: 1024
+
+  # maximum junction and line outputs
+  n_out_junc: 250
+  n_out_line: 50
+
+  # additional ablation study parameters
+  use_cood: 0
+  use_slop: 0
+
+  # junction threashold for evaluation (See #5)
+  eval_junc_thres: 0.008
+
+

@@ -84,7 +84,7 @@ conda create -y -n lcnn
 source activate lcnn
 # Replace cudatoolkit=10.1 with your CUDA version: https://pytorch.org/
 conda install -y pytorch cudatoolkit=10.1 -c pytorch
-conda install -y tensorboardx -c conda-forge
+conda install -y tensorboardx gdown -c conda-forge
 conda install -y pyyaml docopt matplotlib scikit-image opencv
 mkdir data logs post
 ```
@@ -109,13 +109,13 @@ Here, `-d 0` is specifying the GPU ID used for evaluation, and you can specify `
 Make sure `curl` is installed on your system and execute
 ```bash
 cd data
-../misc/gdrive-download.sh 1T4_6Nb5r4yAXre3lf-zpmp3RbmyP1t9q wireframe.tar.xz
+gdown 1T4_6Nb5r4yAXre3lf-zpmp3RbmyP1t9q -O wireframe.tar.xz
 tar xf wireframe.tar.xz
 rm wireframe.tar.xz
 cd ..
 ```
 
-If `gdrive-download.sh` does not work for you, you can download the pre-processed dataset
+If `gdown` does not work for you, you can download the pre-processed dataset
 `wireframe.tar.xz` manually from [Google
 Drive](https://drive.google.com/drive/u/1/folders/1rXLAh5VIj8jwf8vLfuZncStihRO2chFr) and proceed
 accordingly.
@@ -127,7 +127,7 @@ the pre-processed dataset `wireframe.tar.xz`.
 
 ```bash
 cd data
-../misc/gdrive-download.sh 1BRkqyi5CKPQF6IYzj_dQxZFQl0OwbzOf wireframe_raw.tar.xz
+gdown 1BRkqyi5CKPQF6IYzj_dQxZFQl0OwbzOf -O wireframe_raw.tar.xz
 tar xf wireframe_raw.tar.xz
 rm wireframe_raw.tar.xz
 cd ..
